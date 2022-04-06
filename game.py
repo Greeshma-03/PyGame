@@ -2,6 +2,7 @@ from src.village import village
 from src.input_to import *
 from os import system
 from src.King import king
+from src.barbarian import barbars
 import os
 
 game = village()
@@ -16,15 +17,15 @@ while(game.running==1):
 
     if(input=='a' or input=='s' or input=='d' or input=='w' or input==' '):
         game.king.move(game,input)
-    # elif(input=='r' or input=='n' or input=='b'):
-    #     game.barbs.move()
-   
-
+    elif(input=='r'):
+        game.barbs.append(barbars(30,100))
+        
     if(input == 'q'):
         game.running=2
         break
     else:
         game.render()
+        
 
 if(game.running==0):
     print("You are defeated!!!")

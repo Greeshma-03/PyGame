@@ -28,14 +28,14 @@ class king():
 
             #iterating through each hut
             for i in range(5):
-                if(math.sqrt(((board.kx-board.hutsx[i])**2 + (board.ky-board.hutsy[i])**2))<1):
+                if((((board.kx-board.hutsx[i])**2 + (board.ky-board.hutsy[i])**2))==0):
                     if(board.huts_col[i]!=self.black):
                         board.ky +=1
                     continue
             
             #iterating through each wall
             for i in range(36):
-                if(math.sqrt(((board.kx-board.wallsx[i])**2 + (board.ky-board.wallsy[i])**2))<1):
+                if((((board.kx-board.wallsx[i])**2 + (board.ky-board.wallsy[i])**2))==0):
                     if(i%4==0):
                        if(board.wall1_col[int(i/4)]!=self.black):
                           board.ky +=1
@@ -54,14 +54,14 @@ class king():
             #iterating through townhall
             for i in range(4):
                 for j in range(3):
-                    if(math.sqrt(((board.kx-board.townhallx+i)**2 + (board.ky-board.townhally+j)**2))<1):
+                    if(((board.kx-board.townhallx-i)**2 + (board.ky-board.townhally-j)**2)==0):
                         if(board.townhall_col!=self.black):
                             board.ky +=1
                     continue
 
             #iterating through canons
             for i in range(2):
-                if(math.sqrt(((board.kx-board.cx[i])**2 + (board.ky-board.cy[i])**2))<1):
+                if(((board.kx-board.cx[i])**2 + (board.ky-board.cy[i])**2)==0):
                     board.ky +=1
                     continue
                 
@@ -70,14 +70,14 @@ class king():
 
             #iterating through each hut
             for i in range(5):
-                if(math.sqrt(((board.kx-board.hutsx[i])**2 + (board.ky-board.hutsy[i])**2))<1):
+                if(((board.kx-board.hutsx[i])**2 + (board.ky-board.hutsy[i])**2)==0):
                     if(board.huts_col[i]!=self.black):
                         board.ky -=1
                     continue
             
             #iterating through each wall
             for i in range(36):
-                if(math.sqrt(((board.kx-board.wallsx[i])**2 + (board.ky-board.wallsy[i])**2))<1):
+                if(((board.kx-board.wallsx[i])**2 + (board.ky-board.wallsy[i])**2)==0):
                     if(i%4==0):
                        if(board.wall1_col[int(i/4)]!=self.black):
                           board.ky -=1
@@ -96,16 +96,16 @@ class king():
             #iterating through townhall
             for i in range(4):
                 for j in range(3):
-                    if(math.sqrt(((board.kx-board.townhallx+i)**2 + (board.ky-board.townhally+j)**2))<1):
+                    if(((board.kx-board.townhallx-i)**2 + (board.ky-board.townhally-j)**2)==0):
                         if(board.townhall_col!=self.black):
                             board.ky -=1
                     continue
 
             #iterating through canons
             for i in range(2):
-                if(math.sqrt(((board.kx-board.cx[i])**2 + (board.ky-board.cy[i])**2))<1):
+                if(((board.kx-board.cx[i])**2 + (board.ky-board.cy[i])**2)==0):
                     board.ky -=1
-                    continue    
+                    continue   
 
         
         elif(moment=='s'):
@@ -113,14 +113,14 @@ class king():
 
             #iterating through each hut
             for i in range(5):
-                if(math.sqrt(((board.kx-board.hutsx[i])**2 + (board.ky-board.hutsy[i])**2))<1):
+                if((((board.kx-board.hutsx[i])**2 + (board.ky-board.hutsy[i])**2))==0):
                     if(board.huts_col[i]!=self.black):
-                        board.kx-=1
+                        board.kx -=1
                     continue
             
             #iterating through each wall
             for i in range(36):
-                if(math.sqrt(((board.kx-board.wallsx[i])**2 + (board.ky-board.wallsy[i])**2))<1):
+                if((((board.kx-board.wallsx[i])**2 + (board.ky-board.wallsy[i])**2))==0):
                     if(i%4==0):
                        if(board.wall1_col[int(i/4)]!=self.black):
                           board.kx -=1
@@ -132,37 +132,38 @@ class king():
                            board.kx-=1        
                     else:
                          if(board.wall4_col[int((i-3)/4)]!=self.black):
-                               board.kx -=1
+                               board.kx-=1
 
                     continue
             
             #iterating through townhall
             for i in range(4):
                 for j in range(3):
-                    if(math.sqrt(((board.kx-board.townhallx+i)**2 + (board.ky-board.townhally+j)**2))<1):
+                    if(((board.kx-board.townhallx-i)**2 + (board.ky-board.townhally-j)**2)==0):
                         if(board.townhall_col!=self.black):
                             board.kx -=1
                     continue
 
             #iterating through canons
             for i in range(2):
-                if(math.sqrt(((board.kx-board.cx[i])**2 + (board.ky-board.cy[i])**2))<1):
+                if(((board.kx-board.cx[i])**2 + (board.ky-board.cy[i])**2)==0):
                     board.kx -=1
                     continue
+
 
         elif(moment=='w'):
             board.kx-=1 
 
             #iterating through each hut
             for i in range(5):
-                if(math.sqrt(((board.kx-board.hutsx[i])**2 + (board.ky-board.hutsy[i])**2))<1):
+                if(((board.kx-board.hutsx[i])**2 + (board.ky-board.hutsy[i])**2)==0):
                     if(board.huts_col[i]!=self.black):
                         board.kx +=1
                     continue
             
             #iterating through each wall
             for i in range(36):
-                if(math.sqrt(((board.kx-board.wallsx[i])**2 + (board.ky-board.wallsy[i])**2))<1):
+                if(((board.kx-board.wallsx[i])**2 + (board.ky-board.wallsy[i])**2)==0):
                     if(i%4==0):
                        if(board.wall1_col[int(i/4)]!=self.black):
                           board.kx +=1
@@ -177,25 +178,25 @@ class king():
                                board.kx +=1
 
                     continue
-
-            #iterating through canons
-            for i in range(2):
-                if(math.sqrt(((board.kx-board.cx[i])**2 + (board.ky-board.cy[i])**2))<1):
-                    board.kx +=1
-                    continue
             
             #iterating through townhall
             for i in range(4):
                 for j in range(3):
-                    if(math.sqrt(((board.kx-board.townhallx+i)**2 + (board.ky-board.townhally+j)**2))<1):
+                    if(((board.kx-board.townhallx-i)**2 + (board.ky-board.townhally-j)**2)==0):
                         if(board.townhall_col!=self.black):
                             board.kx +=1
-                            break
+                    continue
+
+            #iterating through canons
+            for i in range(2):
+                if(((board.kx-board.cx[i])**2 + (board.ky-board.cy[i])**2)==0):
+                    board.kx +=1
+                    continue
 
         elif(moment == ' '):
             #attack on huts
             for i in range(5):
-                if((board.kx-board.hutsx[i])**2 + (board.ky-board.hutsy[i])**2==1):                      
+                if(((board.kx-board.hutsx[i])**2 + (board.ky-board.hutsy[i])**2)==1):                      
                     if(board.khealth >= board.hhpoints[i]):                      
                      if(board.huts_col[i] == self.green):
                         board.huts_col[i]=self.blue
@@ -220,9 +221,7 @@ class king():
                             board.wall1_col[int((i)/4)]=self.yellow
                             break
                       elif(board.wall1_col[int((i)/4)] == self.yellow):
-                        board.wall1_col[int((i)/4)]=self.black
-                        board.kx=board.wallsx[i]  
-                        board.ky=board.wallsy[i]  
+                        board.wall1_col[int((i)/4)]=self.black                        
                         break
                             
                           
@@ -235,9 +234,7 @@ class king():
                             board.wall2_col[int((i-1)/4)]=self.yellow
                             break
                       elif(board.wall2_col[int((i-1)/4)] == self.yellow):
-                        board.wall2_col[int((i-1)/4)]=self.black
-                        board.kx=board.wallsx[i]  
-                        board.ky=board.wallsy[i]
+                        board.wall2_col[int((i-1)/4)]=self.black                    
                         break
                       
 
@@ -249,9 +246,7 @@ class king():
                             board.wall3_col[int((i-2)/4)]=self.yellow
                             break
                       elif(board.wall3_col[int((i-2)/4)] == self.yellow):
-                        board.wall3_col[int((i-2)/4)]=self.black
-                        board.kx=board.wallsx[i]  
-                        board.ky=board.wallsy[i]
+                        board.wall3_col[int((i-2)/4)]=self.black                      
                         break
  
 
@@ -263,15 +258,13 @@ class king():
                             board.wall4_col[int((i-3)/4)]=self.yellow
                             break
                       elif(board.wall4_col[int((i-3)/4)] == self.yellow):
-                        board.wall4_col[int((i-3)/4)]=self.black
-                        board.kx=board.wallsx[i]  
-                        board.ky=board.wallsy[i]                        
+                        board.wall4_col[int((i-3)/4)]=self.black                                              
                         break
                       
         #attack on townhall
             for i in range(4):
                 for j in range(3):
-                    if(board.townhall_col!=self.black and ((board.kx-(board.townhallx+i))**2 + (board.ky-(board.townhally+j))**2==1)):
+                    if(board.townhall_col!=self.black and (((board.kx-(board.townhallx+i))**2 + (board.ky-(board.townhally+j))**2)==1)):
                         if(board.townhall_col==self.magenta):
                             board.townhall_col=self.blue
                         elif(board.townhall_col==self.blue):
@@ -279,10 +272,6 @@ class king():
                         elif(board.townhall_col==self.yellow):
                             board.townhall_col=self.black        
                         break
-
-
-            
-
                     
 
         if(board.ky == board.cols):

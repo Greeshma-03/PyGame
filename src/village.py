@@ -3,6 +3,7 @@ from typing_extensions import Self
 from colorama import Back, Style, Fore
 import random
 from src.King import king
+from src.barbarian import barbars
 import math
 import os
 
@@ -78,8 +79,8 @@ class village():
         self.hut_max_health=self.hhpoints[0] 
 
         #canons
-        self.cx=[37,37]
-        self.cy=[50,151]
+        self.cx=[10,37]
+        self.cy=[45,151]
         self.crange = random.randint(6, 10)
         self.cdamage = random.randint(1, 5)
         
@@ -110,9 +111,21 @@ class village():
         self.kdamage=2
         self.king=king(self.kx,self.ky) 
         self.khealth=25 
+        
+        #barbarians
+        self.barbs=[]       
+        
 
-    
     def render(self):
+        
+        #Do the barbarian work
+        for obj in self.barbs:
+            obj.move(self)
+            
+
+        #Do canon work
+            
+
         system("clear") 
         destroy=0
         #render all components with black background
@@ -145,6 +158,10 @@ class village():
             self.board[wallx+8][wally+i]=self.wall3_col[i]
             self.board[wallx+i][wally]=self.wall4_col[i] 
 
+        #fill barbarians
+        for obj in self.barbs:
+            self.board[obj.barx][obj.bary]=obj.barb_col
+
         #fill king
         self.board[self.kx][self.ky]=self.king_col 
 
@@ -154,7 +171,6 @@ class village():
         for j in range(0, len(title)):
             self.board[1][80+title_offset+j] = Back.WHITE + \
                 Fore.RED+title[j]+Style.RESET_ALL
-
 
         for i in range(25):
             self.board[3][170+i] = self.bar_col
