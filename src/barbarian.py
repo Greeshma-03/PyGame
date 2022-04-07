@@ -23,7 +23,7 @@ class barbars():
         self.barx=barx
         self.bary=bary
         self.barb_col=self.yellow
-        self.health=10
+        self.health=20
 
     def shortest_dist(self,x,y,board):
         tx=board.townhallx
@@ -71,13 +71,16 @@ class barbars():
     def canon_attack(self,x,y,board):
         for i in range(2):
             if(((x-board.cx[i])**2+(y-board.cy[i])**2)<=(board.crange)**2):
-                if(self.barb_col==self.green):
+                self.health-=board.cdamage
+                if(self.health<20):
+                    self.barb_col=self.magenta
+                elif(self.health<=15 and self.health>=10):
                     self.barb_col=self.blue
-                elif(self.barb_col==self.blue):
+                elif(self.health<=10 and self.health>=5):
                     self.barb_col=self.yellow
-                elif(self.barb_col==self.yellow):
+                elif(self.health<=5 and self.health>=0):
                     self.barb_col=self.red 
-                elif(self.barb_col==self.red):
+                elif(self.health<=0):
                     self.barb_col=self.black 
                     self.health=0
 
@@ -172,7 +175,6 @@ class barbars():
         if(min(dist)==dist[0]):
             self.barx+=1
             self.break_walls(self.barx,self.bary,board,-1,0)
-            self.canon_attack(self.barx,self.bary,board)
         elif(min(dist)==dist[1]):
             self.bary+=1
             self.break_walls(self.barx,self.bary,board,0,-1)
@@ -182,5 +184,6 @@ class barbars():
         else:
             self.bary-=1        
             self.break_walls(self.barx,self.bary,board,0,1)
-        
+        self.canon_attack(self.barx,self.bary,board)
+
     

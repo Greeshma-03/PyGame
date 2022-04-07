@@ -3,6 +3,7 @@ from typing_extensions import Self
 from colorama import Back, Style, Fore
 import random
 from src.King import king
+from src.Queen import queen
 from src.barbarian import barbars
 import math
 import os
@@ -19,12 +20,15 @@ class village():
         self.red = Back.RED+' '+Style.RESET_ALL
         self.yellow = Back.YELLOW+' '+Style.RESET_ALL
         self.white = Back.WHITE+' '+Style.RESET_ALL
+        self.lred = Back.LIGHTRED_EX+' '+Style.RESET_ALL
+        self.lmag = Back.LIGHTMAGENTA_EX+' '+Style.RESET_ALL
+        
 
         #replay of games
         self.num_files = len(os.listdir('replays'))
         self.outp=-1;
         self.running=1  #currently the game is running
-
+        self.main='k'
 
         #Initialsing boundaries of village
         self.rows=40 
@@ -54,6 +58,7 @@ class village():
         
         
         self.king_col=self.red 
+        self.queen_col=self.red 
         self.bg_col=self.black 
 
         #king health bar colors
@@ -67,6 +72,8 @@ class village():
         #townhall
         self.townhallx=int(self.rows/2) 
         self.townhally=int(self.cols/2)
+        self.townhealth=20
+        self.town_max_health=self.townhealth
         
         #spawning points
         self.spx=[10,10,10] 
@@ -74,15 +81,15 @@ class village():
 
         #huts
         self.hutsx=[10,10,10,10,10] 
-        self.hutsy=[20,42,60,120,170] 
+        self.hutsy=[20,46,50,120,170] 
         self.hhpoints=[10,10,10,10,10] 
         self.hut_max_health=self.hhpoints[0] 
 
         #canons
         self.cx=[10,37]
         self.cy=[45,151]
-        self.crange = random.randint(6, 10)
-        self.cdamage = random.randint(1, 5)
+        self.crange = random.randint(1,5)
+        self.cdamage = random.randint(1,5)
         
         #walls
         self.wallsx=[]
@@ -105,26 +112,72 @@ class village():
             self.wallsy.append(wally)
 
 
-        #King
+        #King and Queen
         self.kx=39 
         self.ky=100 
         self.kdamage=2
+        self.khealth=50
         self.king=king(self.kx,self.ky) 
-        self.khealth=25 
+
+        self.qx=39
+        self.qy=100
+        self.qdamage=1
+        self.qhealth=40
+        self.queen=queen(self.qx,self.qy)
         
-        #barbarians
+        #troops
+        self.maxtroops=5
         self.barbs=[]       
         
 
     def render(self):
         
         #Do the barbarian work
+        index=0
         for obj in self.barbs:
             obj.move(self)
-            
-
+            if(obj.health==0):
+                self.barbs.pop(index)
+            index+=1    
+    
         #Do canon work
-            
+        if(self.main=='q'):
+          for i in range(2):
+            if(((self.qx-self.cx[i])**2 + (self.qy-self.cy[i])**2) < (self.cdamage**2) and self.can_col[i] != self.black):
+                self.qhealth -= self.cdamage
+                if(self.qhealth<=40 and self.qhealth>=30):
+                    self.queen_col=self.lred
+                elif(self.qhealth<=30 and self.qhealth>=20):
+                    self.queen_col=self.blue
+                elif(self.qhealth<=20 and self.qhealth>=10):
+                    self.queen_col=self.lmag
+                elif(self.qhealth<=10 and self.qhealth>=0):
+                    self.queen_col=self.yellow   
+                elif(self.qhealth<=0):
+                    self.queen_col=self.black 
+                    self.qhealth=0
+
+          if(self.qhealth <=0):
+             self.running = 0 
+
+        else:
+          for i in range(2):
+            if(((self.kx-self.cx[i])**2 + (self.ky-self.cy[i])**2) < (self.cdamage**2) and self.can_col[i] != self.black):
+                self.khealth -= self.cdamage
+                if(self.khealth<=40 and self.khealth>=30):
+                    self.king_col=self.lred
+                elif(self.khealth<=30 and self.khealth>=20):
+                    self.king_col=self.blue
+                elif(self.khealth<=20 and self.khealth>=10):
+                    self.king_col=self.lmag
+                elif(self.khealth<=10 and self.khealth>=0):
+                    self.king_col=self.yellow   
+                elif(self.khealth<=0):
+                    self.king_col=self.black 
+                    self.khealth=0
+
+          if(self.khealth <= 0):
+             self.running = 0     
 
         system("clear") 
         destroy=0
@@ -162,8 +215,12 @@ class village():
         for obj in self.barbs:
             self.board[obj.barx][obj.bary]=obj.barb_col
 
-        #fill king
-        self.board[self.kx][self.ky]=self.king_col 
+        #fill king/queen
+        if(self.main=='k'):
+         self.board[self.kx][self.ky]=self.king_col 
+        else: 
+         self.board[self.qx][self.qy]=self.queen_col 
+ 
 
         #fill health bar
         title="Health Bar"
@@ -171,12 +228,20 @@ class village():
         for j in range(0, len(title)):
             self.board[1][80+title_offset+j] = Back.WHITE + \
                 Fore.RED+title[j]+Style.RESET_ALL
+        
 
-        for i in range(25):
+        if(self.main=='k'):
+         for i in range(25):
             self.board[3][170+i] = self.bar_col
 
-        for i in range(self.khealth):
+         for i in range(int(self.khealth/2)):
             self.board[3][170+i] = self.yellow 
+        else:
+          for i in range(20):
+                self.board[3][170+i] = self.bar_col
+
+          for i in range(int(self.qhealth/2)):
+            self.board[3][170+i] = self.yellow    
 
         self.outp="\n".join(["".join(row) for row in self.board])
         print(self.outp)
