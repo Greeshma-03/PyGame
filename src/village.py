@@ -5,6 +5,7 @@ import random
 from src.King import king
 from src.Queen import queen
 from src.barbarian import barbars
+from src.archer import archers
 import math
 import os
 
@@ -60,6 +61,7 @@ class village():
         self.king_col=self.red 
         self.queen_col=self.red 
         self.bg_col=self.black 
+        self.tower_col=self.lred
 
         #king health bar colors
         self.bar_col=self.white 
@@ -76,7 +78,7 @@ class village():
         self.town_max_health=self.townhealth
         
         #spawning points
-        self.spx=[10,10,10] 
+        self.spx=[5,30,8] 
         self.spy=[10,180,196] 
 
         #huts
@@ -89,8 +91,20 @@ class village():
         self.cx=[10,37]
         self.cy=[45,151]
         self.crange = random.randint(1,5)
-        self.cdamage = random.randint(1,5)
+        self.cdamage = 4
+        self.canon_attacked=0
         
+        
+        #tower wizard
+        self.tx=11
+        self.ty=42
+        self.tower_attacked=0
+        self.thpoints=40
+        self.thpoints_max=self.thpoints
+        self.targetx=-1
+        self.targety=-1
+
+
         #walls
         self.wallsx=[]
         self.wallsy=[]
@@ -127,10 +141,24 @@ class village():
         
         #troops
         self.maxtroops=5
-        self.barbs=[]       
+        self.barbs=[]   
+        self.archer=[]    
+        self.ballon=[]
+
+        self.bardam=4
+        self.barhealth=20
+        self.archdam=self.bardam/2
+        self.balldam=self.bardam*2
+        self.archealth=self.barhealth/2
+        self.ballhealth=self.barhealth
         
 
     def render(self):
+        self.canon_attacked=0
+        self.tower_attacked=0
+        self.targetx=-1
+        self.targety=-1
+
         
         #Do the barbarian work
         index=0
@@ -138,7 +166,48 @@ class village():
             obj.move(self)
             if(obj.health==0):
                 self.barbs.pop(index)
+            index+=1
+
+        index=0
+        for obj in self.barbs:
+            if(self.tower_attacked==1):
+             obj.wizard_target_attack(obj.barx,obj.bary,self)
+            else:
+                break              
+        
+        index=0
+        for obj in self.archer:
+            #doubling the movement speed
+            obj.move(self)
+            obj.move(self)
+            if(obj.health==0):
+                self.archer.pop(index)
+            index+=1
+
+        index=0
+        for obj in self.archer:
+            if(self.tower_attacked==1):
+             obj.wizard_target_attack(obj.barx,obj.bary,self)
+            else:
+                break 
             index+=1    
+
+        index=0    
+        for obj in self.ballon:
+            #doubling the movement speed
+            obj.move(self)
+            obj.move(self)
+            if(obj.health==0):
+                self.ballon.pop(index)
+            index+=1   
+
+        index=0
+        for obj in self.ballon:
+            if(self.tower_attacked==1):
+             obj.wizard_target_attack(obj.barx,obj.bary,self)
+            else:
+                break 
+            index+=1             
     
         #Do canon work
         if(self.main=='q'):
@@ -200,6 +269,7 @@ class village():
         # #fill canons(1*1)
         for i in range(2):
             self.board[self.cx[i]][self.cy[i]]=self.can_col[i] 
+        self.board[self.tx][self.ty]=self.tower_col
 
         #fill walls    
         wallx=self.townhallx-3 
@@ -214,6 +284,10 @@ class village():
         #fill barbarians
         for obj in self.barbs:
             self.board[obj.barx][obj.bary]=obj.barb_col
+        for obj in self.archer:
+            self.board[obj.barx][obj.bary]=obj.barb_col
+        for obj in self.ballon:
+            self.board[obj.barx][obj.bary]=obj.barb_col    
 
         #fill king/queen
         if(self.main=='k'):
@@ -257,4 +331,4 @@ class village():
             f.write("hello\n")
         
         if(destroy==6):
-            self.running=-1
+            self.running=-1 

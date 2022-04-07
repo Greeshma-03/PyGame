@@ -4,6 +4,9 @@ from os import system
 from src.King import king
 from src.Queen import queen
 from src.barbarian import barbars
+from src.archer import archers
+from src.ballon import ballons
+
 import os
 
 game = village()
@@ -32,31 +35,31 @@ while(game.running==1):
              game.queen.move(game,input) 
     elif(input=='r'):
         if(len(game.barbs)<game.maxtroops):
-          game.barbs.append(barbars(5,170))
+          game.barbs.append(barbars(5,170,game.barhealth,game.bardam))
     elif(input=='g'):
         if(len(game.barbs)<game.maxtroops):
-         game.barbs.append(barbars(20,15))
+         game.barbs.append(barbars(20,15,game.barhealth,game.bardam))
     elif(input=='n'):
         if(len(game.barbs)<game.maxtroops):
-         game.barbs.append(barbars(30,160))
+         game.barbs.append(barbars(30,160,game.barhealth,game.bardam))
     elif(input=='t'):
         if(len(game.archer)<game.maxtroops):
-         game.archer.append(barbars(5,170))
+         game.archer.append(archers(5,170,game.archealth,game.archdam))
     elif(input=='h'):
         if(len(game.archer)<game.maxtroops):
-         game.archer.append(barbars(20,15))
+         game.archer.append(archers(20,15,game.archealth,game.archdam))
     elif(input=='m'):
         if(len(game.archer)<game.maxtroops):
-         game.archer.append(barbars(30,160))
+         game.archer.append(archers(30,160,game.archealth,game.archdam))
     elif(input=='e'):
         if(len(game.ballon)<game.maxtroops):
-         game.ballon.append(barbars(5,170))
+         game.ballon.append(ballons(5,170,game.ballhealth,game.balldam))
     elif(input=='f'):
         if(len(game.ballon)<game.maxtroops):
-         game.ballon.append(barbars(20,15))
+         game.ballon.append(ballons(20,15,game.ballhealth,game.balldam))
     elif(input=='v'):
         if(len(game.ballon)<game.maxtroops):
-         game.ballon.append(barbars(30,160))        
+         game.ballon.append(ballons(30,160,game.ballhealth,game.balldam))        
 
     if(input == 'q'):
         game.running=2
