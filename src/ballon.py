@@ -10,7 +10,7 @@ class ballons():
 
     def __init__(self, barx, bary, heal, dam):
 
-        # Initalsing colors and king
+        # Initalising colors and king
         self.black = Back.BLACK+' '+Style.RESET_ALL
         self.green = Back.GREEN+' '+Style.RESET_ALL
         self.magenta = Back.MAGENTA+' '+Style.RESET_ALL
@@ -35,13 +35,14 @@ class ballons():
         ty = board.townhally
 
         mini = 10000000
-
-        for i in range(2):
+        
+        use2=0
+        for i in range(len(board.can_col)):
                 if(board.can_col[i] == self.black):
+                    use2+=1
                     continue
                 if(mini > ((x-board.cx[i])**2+(y-board.cy[i])**2)):
                     mini = (x-board.cx[i])**2+(y-board.cy[i])**2
-                    #attack by baloon
                     if(mini <= 1):
                         if(board.can_col[i] == self.blue):
                             board.can_col[i] = self.lit
@@ -53,22 +54,26 @@ class ballons():
                             board.can_col[i] = self.black    
                         return 1 
 
-        if(board.tower_col!=self.black):
-            if(mini > ((x-board.tx)**2+(y-board.ty)**2)):
-                    mini = (x-board.tx)**2+(y-board.ty)**2
+        use=0              
+        for i in range(len(board.tower_col)):
+         if(board.tower_col[i]!=self.black):
+            if(mini > ((x-board.tx[i])**2+(y-board.ty[i])**2)):
+                    mini = (x-board.tx[i])**2+(y-board.ty[i])**2
                     #attack by baloon
                     if(mini <= 1):
-                        if(board.tower_col == self.lred):
-                            board.tower_col = self.lit
-                        elif(board.tower_col == self.lit):
-                            board.tower_col = self.yellow
-                        elif(board.tower_col == self.yellow):
-                            board.tower_col = self.red
-                        elif(board.tower_col == self.red):
-                            board.tower_col = self.black    
+                        if(board.tower_col[i] == self.lred):
+                            board.tower_col[i] = self.lit
+                        elif(board.tower_col[i] == self.lit):
+                            board.tower_col[i] = self.yellow
+                        elif(board.tower_col[i] == self.yellow):
+                            board.tower_col[i] = self.red
+                        elif(board.tower_col[i] == self.red):
+                            board.tower_col[i] = self.black    
                         return 1             
+         else:
+             use+=1
 
-        if(board.tower_col == self.black and board.can_col[0] == self.black and board.can_col[1] == self.black):
+        if(use==len(board.tower_col) and use2==len(board.can_col)):
             # huts nearest
             destroy = 0
             for i in range(5):
@@ -110,16 +115,19 @@ class ballons():
         return mini
 
     def wizard_tower_attack(self, x, y, board):
-        if(board.tower_col==self.black):
-            return
-        if(board.tower_attacked == 1):
+        use=0
+        for i in range(len(board.tower_col)):
+            if(board.tower_col[i]==self.black or board.tower_attacked[i]==1):
+                use+=1
+        if(use==len(board.tower_col)):
             return
 
-        if(((x-board.tx)**2+(y-board.ty)**2) <= (board.crange)**2):
+        for i in range(len(board.tower_col)):
+         if(((x-board.tx[i])**2+(y-board.ty[i])**2) <= (board.crange)**2):            
             self.health -= board.cdamage
-            board.tower_attacked = 1
-            board.targetx = x
-            board.targety = y
+            board.tower_attacked[i] = 1
+            board.targetx[i] = x
+            board.targety[i] = y
             if(self.health < 20):
                 self.barb_col = self.magenta
             elif(self.health <= 15 and self.health >= 10):
@@ -131,6 +139,7 @@ class ballons():
             elif(self.health <= 0):
                 self.barb_col = self.black
                 self.health = 0
+            break    
 
     def wizard_target_attack(self, x, y, board):
         if(board.tower_col==self.black):
@@ -167,4 +176,5 @@ class ballons():
             self.barx -= 1
         else:
             self.bary -= 1
+
         self.wizard_tower_attack(self.barx, self.bary, board)

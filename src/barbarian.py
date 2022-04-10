@@ -19,6 +19,8 @@ class barbars():
         self.yellow = Back.YELLOW+' '+Style.RESET_ALL
         self.white = Back.WHITE+' '+Style.RESET_ALL
         self.lit=Back.LIGHTCYAN_EX+' '+Style.RESET_ALL
+        self.lred = Back.LIGHTRED_EX+' '+Style.RESET_ALL
+
 
         self.barx=barx
         self.bary=bary
@@ -32,6 +34,41 @@ class barbars():
         ty=board.townhally
 
         mini=10000000
+
+        for i in range(len(board.can_col)):
+                if(board.can_col[i] == self.black):
+                    continue
+                if(mini > ((x-board.cx[i])**2+(y-board.cy[i])**2)):
+                    mini = (x-board.cx[i])**2+(y-board.cy[i])**2
+                    if(mini <= 1):
+                        if(board.can_col[i] == self.blue):
+                            board.can_col[i] = self.lit
+                        elif(board.can_col[i] == self.lit):
+                            board.can_col[i] = self.yellow
+                        elif(board.can_col[i] == self.yellow):
+                            board.can_col[i] = self.red
+                        elif(board.can_col[i] == self.red):
+                            board.can_col[i] = self.black    
+                        return 1 
+
+
+        for i in range(len(board.tower_col)):
+         if(board.tower_col[i]!=self.black):
+            if(mini > ((x-board.tx[i])**2+(y-board.ty[i])**2)):
+                    mini = (x-board.tx[i])**2+(y-board.ty[i])**2
+                    #attack by baloon
+                    if(mini <= 1):
+                        if(board.tower_col[i] == self.lred):
+                            board.tower_col[i] = self.lit
+                        elif(board.tower_col[i] == self.lit):
+                            board.tower_col[i] = self.yellow
+                        elif(board.tower_col[i] == self.yellow):
+                            board.tower_col[i] = self.red
+                        elif(board.tower_col[i] == self.red):
+                            board.tower_col[i] = self.black    
+                        return 1             
+         
+
 
         #huts nearest
         destroy=0
@@ -49,7 +86,7 @@ class barbars():
                     elif(board.huts_col[i]==self.yellow):
                         board.huts_col[i]=self.black           
                     return 1          
-
+            
         #townhall nearest
         if(destroy==5):
          if(board.townhall_col!=self.black):
@@ -73,13 +110,15 @@ class barbars():
         return mini
 
 
-    def canon_attack(self,x,y,board):
-        if(board.canon_attacked==1):
-            return
-        for i in range(2):
+    def canon_attack(self,x,y,board):   
+        #for each of the canon...    
+        for i in range(len(board.cx)):
+            if(board.canon_attacked[i]==1):
+                continue          
             if(((x-board.cx[i])**2+(y-board.cy[i])**2)<=(board.crange)**2):
                 self.health-=board.cdamage
-                board.canon_attacked=1
+                board.canon_attacked[i]=1
+                
                 if(self.health<20):
                     self.barb_col=self.magenta
                 elif(self.health<=15 and self.health>=10):
@@ -95,26 +134,17 @@ class barbars():
     def wizard_tower_attack(self,x,y,board):        
         if(board.tower_attacked==1):            
             return 
+        
+        for i in range(len(board.targetx)):
+         if(((x-board.tx[i])**2+(y-board.ty[i])**2)<=(board.crange)**2):
+                board.tower_attacked[i]=1    
+                board.targetx[i]=x
+                board.targety[i]=y            
+                  
 
-        if(((x-board.tx)**2+(y-board.ty)**2)<=(board.crange)**2):
-                self.health-=board.cdamage
-                board.tower_attacked=1    
-                board.targetx=x
-                board.targety=y            
-                if(self.health<20):
-                    self.barb_col=self.magenta
-                elif(self.health<=15 and self.health>=10):
-                    self.barb_col=self.blue
-                elif(self.health<=10 and self.health>=5):
-                    self.barb_col=self.yellow
-                elif(self.health<=5 and self.health>=0):
-                    self.barb_col=self.red 
-                elif(self.health<=0):
-                    self.barb_col=self.black 
-                    self.health=0    
-
-    def wizard_target_attack(self,x,y,board):        
-            if((x-board.targetx)**2+(y-board.targety)**2<=9):
+    def wizard_target_attack(self,x,y,board): 
+        for i in range(len(board.targetx)):      
+            if((x-board.targetx[i])**2+(y-board.targety[i])**2<=9):
                 self.health-=board.cdamage                
                 if(self.health<20):
                     self.barb_col=self.magenta
@@ -227,6 +257,7 @@ class barbars():
         else:
             self.bary-=1        
             self.break_walls(self.barx,self.bary,board,0,1)
+
         self.canon_attack(self.barx,self.bary,board)
         self.wizard_tower_attack(self.barx,self.bary,board)
         

@@ -4,7 +4,7 @@ import os
 from src.input_to import *
 from colorama import Back, Style
 import math
-
+import time
 
 class queen():
 
@@ -350,4 +350,93 @@ class queen():
             board.qx = 39
             board.qy = 100
 
-                    
+
+    def spl_attack(self,board):
+            if(self.last_mom=='a'):
+                x=board.qx
+                y=board.qy+16
+            elif(self.last_mom=='d'):
+                x=board.qx
+                y=board.qy-16
+            elif(self.last_mom=='s'):
+                x=board.qx-16
+                y=board.qy
+            elif(self.last_mom=='w'):
+                x=board.qx+16
+                y=board.qy           
+            time.sleep(1)                   
+
+            for i in range(5):
+                if(((x-board.hutsx[i])**2 + (y-board.hutsy[i])**2)<=81):                      
+                 if(board.khealth >= board.hhpoints[i]):
+                    board.hhpoints[i] -= board.kdamage
+                    if 2*board.hhpoints[i] in range(board.hut_max_health, 2*board.hut_max_health+1):
+                            board.huts_col[i] =self.green
+                            continue
+                    elif(10*board.hhpoints[i] in range(2*board.hut_max_health, 5*board.hut_max_health+1)):
+                            board.huts_col[i] = self.yellow
+                            continue
+                    elif(5*board.hhpoints[i] in range(0, board.hut_max_health+1)):
+                            board.huts_col[i] = self.red
+                            continue
+                    else:
+                            board.huts_col[i] = self.black
+
+            #attackon townwall
+            for i in range(36):
+                if(((x-board.wallsx[i])**2 + (y-board.wallsy[i])**2)<=81):
+
+                    if(i%4==0):
+                      if(board.wall1_col[int(i/4)] == self.green):
+                        board.wall1_col[int((i)/4)]=self.blue
+                      elif(board.wall1_col[int((i)/4)] == self.blue):
+                            board.wall1_col[int((i)/4)]=self.yellow
+                      elif(board.wall1_col[int((i)/4)] == self.yellow):
+                        board.wall1_col[int((i)/4)]=self.black                        
+                        
+                            
+                          
+
+                    elif(i%4==1):  
+                      if(board.wall2_col[int((i-1)/4)] == self.green):
+                            board.wall2_col[int((i-1)/4)]=self.blue
+                      elif(board.wall2_col[int((i-1)/4)] == self.blue):
+                            board.wall2_col[int((i-1)/4)]=self.yellow
+                      elif(board.wall2_col[int((i-1)/4)] == self.yellow):
+                        board.wall2_col[int((i-1)/4)]=self.black                    
+                      
+
+                    elif(i%4==2):  
+                      if(board.wall3_col[int((i-2)/4)] == self.green):
+                            board.wall3_col[int((i-2)/4)]=self.blue
+                      elif(board.wall3_col[int((i-2)/4)] == self.blue):
+                            board.wall3_col[int((i-2)/4)]=self.yellow
+                      elif(board.wall3_col[int((i-2)/4)] == self.yellow):
+                        board.wall3_col[int((i-2)/4)]=self.black                      
+ 
+
+                    elif(i%4==3):  
+                      if(board.wall4_col[int((i-3)/4)] == self.green):
+                            board.wall4_col[int((i-3)/4)]=self.blue
+                      elif(board.wall4_col[int((i-3)/4)] == self.blue):
+                            board.wall4_col[int((i-3)/4)]=self.yellow
+                      elif(board.wall4_col[int((i-3)/4)] == self.yellow):
+                        board.wall4_col[int((i-3)/4)]=self.black                                              
+                      
+        #attack on townhall
+            for i in range(4):
+                for j in range(3):
+                 if(board.khealth >= board.townhealth):
+                    if(board.townhall_col!=self.black and (((x-(board.townhallx+i))**2 + (y-(board.townhally+j))**2)<=81)):
+                        board.townhealth-=board.kdamage
+                        if 2*board.townhealth in range(board.town_max_health, 2*board.town_max_health):
+                            board.townhall_col=self.magenta
+                        elif 10*board.townhealth in range(2*board.town_max_health, 5*board.town_max_health+1):
+                            board.townhall_col=self.yellow
+                        elif 5*board.townhealth in range(0, board.town_max_health+1):
+                            board.townhall_col=self.red
+                        else:
+                            board.townhall_col=self.black              
+                        break
+
+            return

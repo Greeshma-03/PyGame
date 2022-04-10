@@ -9,18 +9,53 @@ from src.ballon import ballons
 
 import os
 
-game = village()
+win=1
 
 while(1):
  inp=input("Do you want to play with King or Archer Queen(k/q)?")
  if(inp.lower()=='k'):
-    game.main='k'
+    main='k'
     break
  elif(inp.lower()=='q'):
-    game.main='q'
+    main='q'
     break 
 
-while(game.running==1):
+while(win>0 and win<4):
+ game = village()
+ if(main=='k'):
+     game.main='k'
+ elif(main=='q'):
+     game.main='q'
+ game.level=win
+ if(win>=2):
+        game.tx.append(12)
+        game.ty.append(40)
+        game.tower_attacked.append(0)
+        game.tower_col.append(game.lred)
+        game.targetx.append(-1)
+        game.targety.append(-1)
+
+        game.cx.append(20)
+        game.cy.append(20)
+        game.canon_attacked.append(0)
+        game.can_col.append(game.blue)
+        
+
+ if(win==3):
+        game.tx.append(14)
+        game.ty.append(20)
+        game.tower_attacked.append(0)
+        game.tower_col.append(game.lred)
+        game.targetx.append(-1)
+        game.targety.append(-1)
+
+        game.cx.append(30)
+        game.cy.append(30)
+        game.canon_attacked.append(0)
+        game.can_col.append(game.blue)
+
+
+ while(game.running==1):
     input=input_to()
 
     if(input == 'a' or input == 'w' or input == 's' or input == 'd'):
@@ -59,7 +94,9 @@ while(game.running==1):
          game.ballon.append(ballons(20,15,game.ballhealth,game.balldam))
     elif(input=='v'):
         if(len(game.ballon)<game.maxtroops):
-         game.ballon.append(ballons(30,160,game.ballhealth,game.balldam))        
+         game.ballon.append(ballons(30,160,game.ballhealth,game.balldam))     
+    elif(input=='p'):
+        game.queen.spl_attack(game)
 
     if(input == 'q'):
         game.running=2
@@ -68,9 +105,19 @@ while(game.running==1):
         game.render()
         
 
-if(game.running==0):
+ if(game.running==0):
+    win=0
+ elif(game.running==-1):    
+    win+=1     
+ else:
+    win=-1
+
+if(win==0):
     print("You are defeated!!!")
-elif(game.running==-1):    
-    print("You won the match!!!")    
+    win=0
+elif(win==4):    
+    print("You won the match!!!")   
+    win+=1 
 else:
     print("You quitted the match!!")    
+  

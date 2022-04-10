@@ -60,10 +60,16 @@ class king():
                     continue
 
             #iterating through canons
-            for i in range(2):
+            for i in range(len(board.can_col)):
                 if(((board.kx-board.cx[i])**2 + (board.ky-board.cy[i])**2)==0):
                     board.ky +=1
                     continue
+
+            #iterating through tower wizard
+            for i in range(len(board.targetx)):
+                if(((board.kx-board.tx[i])**2 + (board.ky-board.ty[i])**2)==0):
+                    board.ky +=1
+                    continue    
                 
         elif(moment=='d'):
             board.ky+=1 
