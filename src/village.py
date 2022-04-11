@@ -47,14 +47,14 @@ class village():
         self.spy=[10,180,196] 
 
         #huts
-        self.hutsx=[10,10,10,10,10] 
-        self.hutsy=[20,46,50,120,170] 
+        self.hutsx=[12,10,10,10,10] 
+        self.hutsy=[38,46,50,120,170] 
         self.hhpoints=[10,10,10,10,10] 
         self.hut_max_health=self.hhpoints[0] 
 
         #canons
-        self.cx=[10,37]
-        self.cy=[95,151]
+        self.cx=[12,37]
+        self.cy=[44,151]
         self.crange = random.randint(1,5)
         self.cdamage = 4
         self.canon_attacked=[0,0]
@@ -150,10 +150,14 @@ class village():
         self.bar_col=self.white 
         self.level_col = Back.LIGHTWHITE_EX+' '+Style.RESET_ALL
         self.spawn_col=self.yellow 
+        self.sleep=0
 
         
 
     def render(self):
+        if(self.sleep!=-1):
+         self.queen.spl_attack(self)
+
         for i in range(len(self.tower_col)):
          self.tower_attacked[i]=0
 

@@ -352,6 +352,8 @@ class queen():
 
 
     def spl_attack(self,board):
+        if(time.time()-board.sleep>1):
+            board.sleep=-1
             if(self.last_mom=='a'):
                 x=board.qx
                 y=board.qy+16
@@ -363,8 +365,7 @@ class queen():
                 y=board.qy
             elif(self.last_mom=='w'):
                 x=board.qx+16
-                y=board.qy           
-            time.sleep(1)                   
+                y=board.qy    
 
             for i in range(5):
                 if(((x-board.hutsx[i])**2 + (y-board.hutsy[i])**2)<=81):                      
@@ -437,6 +438,6 @@ class queen():
                             board.townhall_col=self.red
                         else:
                             board.townhall_col=self.black              
-                        break
+                        break            
 
             return

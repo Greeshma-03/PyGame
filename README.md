@@ -10,10 +10,11 @@ This is Miniature version of Clash of clans where the user will control the king
 
 ## Rules and Functionalities
 
-### King
+### King or Archer Queen
 * To move the king left,right,up,down use the keys a,d,w,s respectively
 * To attack TownHall or Townwalls or huts, press the space button 
 * King can't cross the buildings or canons i.e the keys doesn't work when there are obstacles in the path
+* King or Archer queen can't attack defensive buildings
 
 
 ### Canons
@@ -37,22 +38,34 @@ This is Miniature version of Clash of clans where the user will control the king
 * Maximum number of barbarians from one spawning point is 3
 
 
-## Features
+### Wizard Tower
+* There should be at least two wizard towers in your village.
+* The Wizard Tower can attack aerial troops.
+* Range and damage are same as that of cannon.
+* At a given point, the wizard tower can only target a single troop.
+* The wizard tower deals AoE damage in a 3x3 tile area around the troop it is attacking.
+* In case you have many troops stacked on one another, if the wizard tower were to target and attack one of them, all of them would take damage due to the AoE damage of the wizard tower.
 
+
+### Levels
+* Implemented a level system with three levels. For higher levels, the number of cannons and wizard towers should increase.
+* Each level will inevitably have different layouts (due to the differing number of buildings). You are free to design the levels as you wish.The troop limit will reset for each level
+
+
+## Features
 * The health of the king is displayed as a health bar on top of the screen.
 * Sound effects are added to the movements of the king and attack by the king
 * Victory and Defeat are indicated at the end of each game.
 * Replay feature for all possible attacks,is implemented and all the games played so far are availables as replay.
 * The barbarian movement is automated and destroys the buildings and walls on it's way.
 * The strength of building is represented by the color.
-* Rage and Heal spells are implemented which doubles damage to king and alaive troop and the latter one increasing helath to 150% of the king.
 
 
 ## Code Files
-
 * game.py: The main infinite loop for taking input and calling corresponding functions defined in classes
 * screen.py: Render the screen each time with colors of each entity involved in the game for small time step by clearing it and again displaying the board of the village
 * king.py: The implementation of king moments and attacks are present in the file
 * Barbarian.py: The implementation of automated moment of barbarian is coded here
+* ballon.py: The implementation of automated moment of ballon is coded here
+* archer.py: The implementation of automated moment of archer is coded here
 * input.py: To wait for the input for every 0.1s and proceed next
-* canon.py: The code for attacking of canons is located here# PyGame

@@ -8,6 +8,7 @@ from src.archer import archers
 from src.ballon import ballons
 
 import os
+import time
 
 win=1
 
@@ -96,7 +97,7 @@ while(win>0 and win<4):
         if(len(game.ballon)<game.maxtroops):
          game.ballon.append(ballons(30,160,game.ballhealth,game.balldam))     
     elif(input=='p'):
-        game.queen.spl_attack(game)
+        game.sleep=time.time()
 
     if(input == 'q'):
         game.running=2
